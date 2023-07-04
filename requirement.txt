@@ -1,0 +1,2 @@
+yfinance
+sec_edgar_downloader

@@ -1,0 +1,8 @@
+# .gitignore
+
+# Ignore the sec_edgar_filings directory
+sec_edgar_filings/
+
+# Ignore all .log files
+*.log
+
