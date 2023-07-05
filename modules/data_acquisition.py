@@ -1,5 +1,7 @@
 import yfinance as yf
 from sec_edgar_downloader import Downloader
+import os
+from bs4 import BeautifulSoup
 
 class StockData:
     def __init__(self, ticker):
@@ -17,25 +19,35 @@ class StockData:
     def set_news(self, news):
         self.news = news
 
+def read_edgar_file(ticker, report_type, file_name):
+    path = os.path.join("sec_edgar_filings", ticker, report_type, file_name)
+    with open(path, 'r') as f:
+        content = f.read()
+    soup = BeautifulSoup(content, 'html.parser')
+    paragraphs = soup.find_all('p')
+    list_of_paragraphs = [paragraph.text for paragraph in paragraphs]
+
+    return list_of_paragraphs
+
 def fetch_stock_data(stock: StockData, period="1y", interval="1d"):
     ticker_data = yf.Ticker(stock.ticker)
     price_history = ticker_data.history(period=period, interval=interval)
     stock.set_price_history(price_history)
 
-def fetch_sec_reports(stock: StockData, after="2023-01-01"):
+def fetch_sec_reports(stock: StockData, amount=1):
+
+    #TODO: for the timebeing only 10-K is collected
+    report_type = "10-K"
+
     # Initialize a downloader
     dl = Downloader()
 
     # Download the 10-K reports
-    dl.get("10-K", stock.ticker, after=after, download_details=True)
-    # Add additional calls here to download other reports if needed
+    dl.get(report_type, stock.ticker, amount=amount, download_details=True)
+    #TODO: Add additional calls here to download other reports if needed
 
     # Parse the downloaded reports and extract the data you need. This might involve 
-    # some complex processing depending on the exact data you want to extract.
-
-    # Since the processing can be complex and specific to your needs, I'll leave this 
-    # part out for now. Replace the line below with your own processing.
-    parsed_reports = None 
+    parsed_reports = read_edgar_file(stock.ticker, report_type, "filing-details.html")
 
     stock.set_sec_reports(parsed_reports)
 
