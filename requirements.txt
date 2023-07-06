@@ -1,3 +1,6 @@
 sec-edgar-downloader==4.3.0
 pathlib==1.0.1
 yfinance==0.2.22
+beautifulsoup4
+dash
+apache-airflow==2.1.2

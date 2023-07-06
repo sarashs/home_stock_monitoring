@@ -1,6 +1,7 @@
 import yfinance as yf
 from sec_edgar_downloader import Downloader
 import os
+import glob
 from bs4 import BeautifulSoup
 
 class StockData:
@@ -20,12 +21,27 @@ class StockData:
         self.news = news
 
 def read_edgar_file(ticker, report_type, file_name):
-    path = os.path.join("sec_edgar_filings", ticker, report_type, file_name)
-    with open(path, 'r') as f:
-        content = f.read()
-    soup = BeautifulSoup(content, 'html.parser')
-    paragraphs = soup.find_all('p')
-    list_of_paragraphs = [paragraph.text for paragraph in paragraphs]
+    # NOTE: the downloader puts the files in 10-K/some_naming_convention/report so I am using '*' to take care of that
+    path = os.path.join(os.getcwd(),"sec-edgar-filings", ticker, report_type) 
+    
+    # Use glob to find the file
+    dirs = [d for d in os.listdir(path)]# if os.path.isdir(os.path.join(path, d))]
+    matching_files = []
+    for dir in dirs:
+        files = glob.glob(f'{path}/{dir}/{file_name}')
+        if files:
+           matching_files += files 
+
+    # Check if any matching files were found
+    if matching_files:
+        file_path = matching_files[0]
+        with open(file_path, 'r') as f:
+            content = f.read()
+        soup = BeautifulSoup(content, 'html.parser')
+        paragraphs = soup.find_all('div')
+        list_of_paragraphs = [paragraph.text for paragraph in paragraphs]
+    else:
+        list_of_paragraphs = None
 
     return list_of_paragraphs
 

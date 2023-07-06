@@ -42,6 +42,7 @@ Here's a suggested directory and file structure for your project:
 │   ├── data_acquisition.py   # module for data acquisition
 │   ├── data_processing.py    # module for data processing
 │   ├── sentiment_analysis.py # module for sentiment analysis
+│   ├── database_handler.py # get and set the data from the database
 │   └── analytics.py          # module for analytics
 │
 ├── airflow/
