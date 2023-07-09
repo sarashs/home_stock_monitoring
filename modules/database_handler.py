@@ -73,3 +73,9 @@ class DatabaseHandler:
         cursor = self.conn.cursor()
         cursor.execute('''SELECT * FROM SEC WHERE TICKER=?''', (ticker,))
         return cursor.fetchall()
+
+    def get_news_data(self, ticker):
+        """ Fetch news data for a given ticker """
+        cursor = self.conn.cursor()
+        cursor.execute('''SELECT * FROM NEWS WHERE TICKER=?''', (ticker,))
+        return cursor.fetchall()

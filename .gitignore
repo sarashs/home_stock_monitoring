@@ -3,6 +3,9 @@
 # Ignore the sec_edgar_filings directory
 sec-edgar-filings/
 
+# Ignore pycache
+modules/__pycache__/*
+
 # Ignore all .log files
 *.log
 

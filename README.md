@@ -54,6 +54,8 @@ Here's a suggested directory and file structure for your project:
 ├── dashboard/
 │   └── dashboard_app.py      # Dash application for the dashboard
 │
+├── test.py                   # tests most of the modules and the database handler functions
+│
 └── run.py                    # main script to run the entire pipeline
 ```
 
@@ -78,6 +80,8 @@ Let's break down what each file/module will do:
 9. **`docker-compose.yml`**: This file will include services like your application and Apache Airflow. 
 
 10. **`stock_data.db`**: This is your SQLite database file which will be stored on your local machine.
+
+11. **`test.py`**: This is your test framework to test the modules functionality.
 
 By modularizing your code like this, you're ensuring that your project is organized, scalable, and maintainable.
 
